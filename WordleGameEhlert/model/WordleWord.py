@@ -30,7 +30,17 @@ class WordleWord():
     
     @word.setter
     def set_word(self, word):
-        self.self._word = word
+        # create superset for validating word attribute
+        word_characters = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+
+        # check to ensure no numbers are in word
+        if not word_characters.issuperset(word):
+            raise ValueError
+
+        # check to ensure word is correct length
+        if len(word) != 5:
+            raise ValueError
+        self._word = word
         
     @property
     def attempted(self):
@@ -38,7 +48,7 @@ class WordleWord():
     
     @attempted.setter
     def set_attempted(self, attempted):
-        self.self._attempted = attempted
+        self._attempted = attempted
 
     def __str__(self):
         str_string = f"Wordle Word(Word: \"{self._word}\", Attempted: {self._attempted})"
