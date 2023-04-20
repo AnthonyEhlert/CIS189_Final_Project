@@ -27,7 +27,7 @@ class Attempt():
 
     @wordle_word.setter
     def set_wordle_word(self, wordle_word):
-        self.self._wordle_word = wordle_word
+        self._wordle_word = wordle_word
 
     @property
     def date_attempted(self):
@@ -35,7 +35,7 @@ class Attempt():
 
     @date_attempted.setter
     def set_date_attempted(self, date_attempted):
-        self.self._date_attempted = date_attempted
+        self._date_attempted = date_attempted
 
     @property
     def guessed_correct(self):
@@ -43,7 +43,7 @@ class Attempt():
 
     @guessed_correct.setter
     def set_guessed_correct(self, guessed_correct):
-        self.self._guessed_correct = guessed_correct
+        self._guessed_correct = guessed_correct
 
     @property
     def num_of_guesses(self):
@@ -51,7 +51,7 @@ class Attempt():
 
     @num_of_guesses.setter
     def set_num_of_guesses(self, num_of_guesses):
-        self.self._num_of_guesses = num_of_guesses
+        self._num_of_guesses = num_of_guesses
 
     def __str__(self):
         str_string = f"Attempt(Wordle Word: \"{self._wordle_word.word}\""
