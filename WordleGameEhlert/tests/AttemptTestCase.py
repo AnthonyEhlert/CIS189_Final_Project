@@ -29,13 +29,14 @@ class AttemptTestCase(unittest.TestCase):
         self.assertEqual(self.attempt.date_attempted, datetime.date.today())
         self.assertEqual(self.attempt.guessed_correct, False)
         self.assertEqual(self.attempt.num_of_guesses, 0)
+        self.assertEqual(self.attempt.wrong_letters, [])
 
     def test_str(self):
         """
         Tests the overriden __str__ method
         """
         expected_string = "Attempt(Wordle Word: \"TRUST\", Date of Attempt: " + str(
-            datetime.date.today()) + ", Guessed Correct: False, Number of Guesses: 0"
+            datetime.date.today()) + ", Guessed Correct: False, Number of Guesses: 0, Wrong Letters Guessed: []"
         self.assertEqual(self.attempt.__str__(), expected_string)
 
     def test_repr(self):

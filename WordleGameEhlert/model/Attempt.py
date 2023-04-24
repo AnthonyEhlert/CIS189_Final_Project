@@ -19,6 +19,7 @@ class Attempt():
         self._date_attempted = datetime.datetime.today().date()
         self._guessed_correct = False
         self._num_of_guesses = 0
+        self._wrong_letters = []
 
     # GETTERS AND SETTERS
     @property
@@ -53,12 +54,21 @@ class Attempt():
     def set_num_of_guesses(self, num_of_guesses):
         self._num_of_guesses = num_of_guesses
 
+    @property
+    def wrong_letters(self):
+        return self._wrong_letters
+
+    @wrong_letters.setter
+    def set_wrong_letters(self, wrong_letters):
+        self._wrong_letters = wrong_letters
+
     def __str__(self):
         str_string = f"Attempt(Wordle Word: \"{self._wordle_word.word}\""
         str_string += f", Date of Attempt: {self._date_attempted}"
         str_string += f", Guessed Correct: {self._guessed_correct}"
         str_string += f", Number of Guesses: {self._num_of_guesses}"
-        return  str_string
+        str_string += f", Wrong Letters Guessed: {self._wrong_letters}"
+        return str_string
 
     def __repr__(self):
         return "Attempt(" + str(self._wordle_word.__repr__()) + ")"
