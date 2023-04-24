@@ -36,6 +36,7 @@ class WordleGame():
         self._valid_word_dict = create_valid_word_dict(valid_word_set)
         self._user_attempt = None
         self._num_of_words_attempted = 0
+        self._num_guessed_correct = 0
 
     def generate_random_attempt(self):
         """
@@ -89,6 +90,14 @@ class WordleGame():
     @num_of_words_attempted.setter
     def set_num_of_words_attempted(self, num_of_words_attempted):
         self._num_of_words_attempted = num_of_words_attempted
+
+    @property
+    def num_guessed_correct(self):
+        return self._num_guessed_correct
+
+    @num_guessed_correct.setter
+    def set_num_guessed_correct(self, num_guessed_correct):
+        self._num_guessed_correct = num_guessed_correct
 
     @property
     def user_attempt(self):

@@ -27,6 +27,7 @@ class WordleGameTestCase(unittest.TestCase):
         self.assertEqual(self.test_game.valid_word_dict[1].word, "WRONG")
         self.assertEqual(self.test_game.num_of_words_attempted, 0)
         self.assertEqual(self.test_game.user_attempt, None)
+        self.assertEqual(self.test_game.num_guessed_correct, 0)
 
     def test_generate_random_attempt(self):
         """
