@@ -432,8 +432,8 @@ def submit_guess():
         #print(wordle_game.user_attempt.wrong_letters)
 
         # extract word from WordleWord object and convert to list
-        ###char_list = list(wordle_game.user_attempt.wordle_word.word)#####
-        char_list = ["C", "L", "O", "S", "E"]
+        char_list = list(wordle_game.user_attempt.wordle_word.word)
+        #char_list = ["C", "L", "O", "S", "E"]
         print(char_list)
 
         # convert user_guess to list
@@ -443,8 +443,8 @@ def submit_guess():
         correct_letters = []
         misplaced_letters = []
 
-        # clear wrong_letters list
-        wordle_game.user_attempt.wrong_letters.clear()
+        # create empty current_wrong_letters_list
+        current_wrong_letters = []
 
         if user_guess_as_list == char_list:
             char_count = 0
@@ -515,6 +515,7 @@ def submit_guess():
                     list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
                 else:
                     wordle_game.user_attempt.wrong_letters.append(char)
+                    current_wrong_letters.append(char)
                 char_count += 1
 
             # char is not in word
@@ -540,7 +541,7 @@ def submit_guess():
             print(f"Wrong Letters: {set(wordle_game.user_attempt.wrong_letters)}")
 
             # update letter_lbls that match wrong letters
-            for letter in wordle_game.user_attempt.wrong_letters:
+            for letter in current_wrong_letters:
                 if (letter not in correct_letters) and (letter not in misplaced_letters):
                     temp_letter_lbl = letter_lbl_dict[letter]
                     temp_letter_lbl.config(relief=SUNKEN, fg="red", font= 'segoe 9 bold')
