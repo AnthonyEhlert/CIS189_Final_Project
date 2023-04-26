@@ -1,7 +1,7 @@
 """
 Program: Attempt.py
 Author: Tony Ehlert
-Last date modified: 04/21/2023
+Last date modified: 04/26/2023
 
 The purpose of this program is to define an Attempt class to be used within a Wordle guessing game
 The input is required information and code to define the class
@@ -85,3 +85,7 @@ if __name__ == "__main__":
     # test __str__ and __repr__ methods
     print(test_attempt)
     print(test_attempt.__repr__())
+
+    # garbage collection
+    del test_wordle_word
+    del test_attempt

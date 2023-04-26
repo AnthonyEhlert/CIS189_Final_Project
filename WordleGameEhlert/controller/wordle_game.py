@@ -1,26 +1,29 @@
 """
 Program: wordle_game.py
 Author: Tony Ehlert
-Last date modified: 4/23/2023
+Last date modified: 4/26/2023
 
-The purpose of this program is contain methods that are used to run a Wordle guessing game
+The purpose of this program is to contain methods that are used to run a Wordle guessing game and perform various tests
+of those methods
+
 The input is required information and code to define the methods needed
 The output is print statements to the console testing the methods
 """
-import os as os
 import random
 
 from WordleGameEhlert.model.Attempt import Attempt
 from WordleGameEhlert.model.WordleWord import WordleWord
 
 
-def start_game(valid_word_set):
+def start_game():
     """
     This method is called to start the wordle game. It calls other methods to run the wordle game
 
-    :param valid_word_set: set of valid words
     :return:
     """
+    # create valid word set
+    valid_word_set = read_word_list_file()
+
     # create dictionary of WordleWord objects from words in set
     valid_word_dict = {}
     id_num = 1
@@ -98,7 +101,7 @@ def start_game(valid_word_set):
 
             # convert user_guess to list
             user_guess_as_list = list(user_guess)
-            #print(user_guess)
+            # print(user_guess)
 
             # create lists for correct_letters and misplaced_letters
             correct_letters = []
@@ -141,7 +144,6 @@ def start_game(valid_word_set):
                 num_of_guesses += 1
                 user_attempt.set_num_of_guesses = num_of_guesses
 
-    pass
 
 def read_word_list_file():
     """
@@ -162,6 +164,7 @@ def read_word_list_file():
                 print("Failed to convert to string")
     # return list as set
     return set(word_list)
+
 
 def get_user_guess(valid_word_set):
     """
@@ -189,15 +192,15 @@ def get_user_guess(valid_word_set):
     # prompt user for input
     user_guess = input("Please enter your guess: ")
 
-
     while not valid_guess(user_guess, valid_word_set):
         user_guess = input("Not a valid word! Please enter your guess: ")
 
     return user_guess.upper()
 
+
 if __name__ == "__main__":
-    # create valid word dictionary
-    valid_word_set = read_word_list_file()
+    # # create valid word set
+    # valid_word_set = read_word_list_file()
 
     # start game
-    start_game(valid_word_set)
+    start_game()

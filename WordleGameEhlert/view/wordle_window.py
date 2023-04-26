@@ -1,7 +1,7 @@
 """
 Program: wordle_window.py
 Author: Tony Ehlert
-Last date modified: 4/24/2023
+Last date modified: 4/26/2023
 
 The purpose of this program is run a GUI that implements/runs a Wordle guessing game
 The input is required code and methods to create and run the GUI
@@ -196,6 +196,11 @@ def create_row_letter_labels():
         lbl_letter_m.grid(row=4, column=8, rowspan=1, columnspan=1)
         letter_lbl_dict["M"] = lbl_letter_m
 
+    # create main label for wrong letters in row 1
+    lbl_empty_row1 = tk.Label(main_window, text='LETTERS NOT IN WORD', font= "segoe 9 underline")
+    lbl_empty_row1.grid(row=1, column=5, rowspan=1, columnspan=3)
+
+    # call inner methods
     create_row_2_letters()
     create_row_3_letters()
     create_row_4_letters()
@@ -383,12 +388,7 @@ def create_guess_labels():
         # add row14_lbl_list to list_letter_row_lbls (guess5)
         list_letter_row_lbls.append(guess5_lbl_list)
 
-    # destroy previous labels if present
-    if list_letter_row_lbls is not None:
-        for list in list_letter_row_lbls:
-            for label in list:
-                label.destroy()
-
+    # call inner methods to create labels
     create_guess1_labels()
     create_guess2_labels()
     create_guess3_labels()
@@ -422,7 +422,7 @@ def submit_guess():
 
     # clear entry_guess
     entry_guess.delete(0, END)
-    print(user_guess)
+    #print(user_guess)
 
     # check submission to ensure it is valid
     if user_guess.upper() not in valid_word_set:
@@ -436,13 +436,16 @@ def submit_guess():
 
         # extract word from WordleWord object and convert to list
         char_list = list(wordle_game.user_attempt.wordle_word.word)
+
+        ###### COMMENTED OUT char_list (words) USED FOR TESTING BELOW HERE ######
         # char_list = ["U", "D", "D", "E", "R"] #DRUID (druid= Y Y Y R Y) pass
         # char_list = ["C", "L", "O", "S", "E"] #LEAVE (leave= Y R R R G) pass
         # char_list = ["C", "H", "E", "E", "R"] #CLOSE (close= G R R R Y) pass
         # char_list = ["T", "H", "E", "M", "E"] #START (start= R Y R R R) pass
         # char_list = ["D", "E", "M", "U", "R"] #TRACE and LEMUR (trace = R Y R R Y) (lemur= R G G G G) pass
         # char_list = ["H", "Y", "E", "N", "A"] #NIECE and GREEN (niece= Y R G R R) (green= R R G R Y) pass
-        print(char_list)
+        #print(char_list)
+        ###### COMMENTED OUT char_list (words) USED FOR TESTING ABOVE HERE ######
 
         # convert user_guess to list
         user_guess_as_list = list(user_guess.upper())
@@ -538,14 +541,15 @@ def submit_guess():
                     current_wrong_letters[char_count] = char
                 char_count += 1
 
-            # print lists for debugging
-            print("Incorrect")
-            print(f"Correct Letters: {correct_letters}")
-            print(f"Misplaced Letters: {misplaced_letters}")
-            print(f"Wrong Letters: {wordle_game.user_attempt.wrong_letters}")
-            print(f"Current Wrong Letters: {current_wrong_letters}")
-            print(f"Remaining Letters: {remaining_char_list}")
-            print(f"Remaining User Guess: {user_guess_as_list}")
+            ###### COMMENTED OUT PRINT OF LISTS FOR DEBUGGING BELOW HERE ######
+            # print("Incorrect")
+            # print(f"Correct Letters: {correct_letters}")
+            # print(f"Misplaced Letters: {misplaced_letters}")
+            # print(f"Wrong Letters: {wordle_game.user_attempt.wrong_letters}")
+            # print(f"Current Wrong Letters: {current_wrong_letters}")
+            # print(f"Remaining Letters: {remaining_char_list}")
+            # print(f"Remaining User Guess: {user_guess_as_list}")
+            ###### COMMENTED OUT PRINT OF LISTS FOR DEBUGGING ABOVE HERE ######
 
             # WRONG LETTERS for loop
             char_count = 0
@@ -643,10 +647,6 @@ lbl_empty_col_limit.grid(row=0, column=col_limit)
 
 # set column width
 set_col_width(col_limit, col_width)
-
-# add empy label for row 1
-lbl_empty_row1 = tk.Label(main_window, text='')
-lbl_empty_row1.grid(row=1, column=0)
 
 # create letter labels top of GUI
 create_row_letter_labels()
