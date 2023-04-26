@@ -14,7 +14,6 @@ from tkinter import SUNKEN, CENTER, NORMAL, DISABLED, END, NONE, FLAT, font
 from WordleGameEhlert.constants import MAX_GUESSES
 from WordleGameEhlert.model.WordleGame import WordleGame
 
-
 '''
 GLOBAL VARIABLE CODE BELOW HERE
 '''
@@ -33,7 +32,7 @@ with open('wordle_word_list.txt') as file:
             print("Failed to convert to string")
 
 valid_word_set = set(word_list)
-#print(valid_word_set)
+# print(valid_word_set)
 
 # create global WordleGame object
 wordle_game = WordleGame(valid_word_set)
@@ -54,6 +53,7 @@ GLOBAL VARIABLE CODE BELOW HERE
 '''
 FUNCTIONS BELOW HERE
 '''
+
 def start_game():
     """
     This method enables the entry_guess field and submit_btn and also populates the lbl_current_word_num label text
@@ -61,16 +61,18 @@ def start_game():
     """
     submit_btn.config(state=NORMAL)
     entry_guess.config(state=NORMAL)
-    lbl_current_word_num.config(text= wordle_game.num_of_words_attempted)
-    lbl_num_guessed_correct.config(text= wordle_game.num_guessed_correct)
+    lbl_current_word_num.config(text=wordle_game.num_of_words_attempted)
+    lbl_num_guessed_correct.config(text=wordle_game.num_guessed_correct)
     start_game_btn.config(state=DISABLED)
     next_word_btn.config(state=NORMAL)
+
 
 def create_row_letter_labels():
     """
     This method contains three inner functions that each create a row of letter labels within the main_window
     :return:
     """
+
     def create_row_2_letters():
         """
         this method creates the letter labels for row 2 and adds them to the letter_lbl_dict
@@ -79,7 +81,7 @@ def create_row_letter_labels():
         # create letter labels for row 2 and add to dictionary
         lbl_letter_q = tk.Label(main_window, text='Q', justify='center')
         lbl_letter_q.grid(row=2, column=2, rowspan=1, columnspan=1)
-        letter_lbl_dict["Q"]= lbl_letter_q
+        letter_lbl_dict["Q"] = lbl_letter_q
 
         lbl_letter_w = tk.Label(main_window, text='W', justify='center')
         lbl_letter_w.grid(row=2, column=3, rowspan=1, columnspan=1)
@@ -197,6 +199,7 @@ def create_row_letter_labels():
     create_row_2_letters()
     create_row_3_letters()
     create_row_4_letters()
+
 
 def create_guess_labels():
     """
@@ -392,6 +395,7 @@ def create_guess_labels():
     create_guess4_labels()
     create_guess5_labels()
 
+
 def set_col_width(col_limit, col_width):
     """
     This method creates empty labels for each column with the provided col_width argument to set the width
@@ -404,6 +408,7 @@ def set_col_width(col_limit, col_width):
     for x in range(1, col_limit):
         lbl_empty_col = tk.Label(main_window, text='', width=col_width)
         lbl_empty_col.grid(row=0, column=x)
+
 
 def submit_guess():
     """
@@ -421,7 +426,7 @@ def submit_guess():
 
     # check submission to ensure it is valid
     if user_guess.upper() not in valid_word_set:
-        lbl_submitted_guess.config(text="Invalid Entry", fg= "red")
+        lbl_submitted_guess.config(text="Invalid Entry", fg="red")
         return
 
     # verification that word has not been correctly guessed and that num_of_guesses has not exceeded MAN_GUESSES
@@ -429,11 +434,14 @@ def submit_guess():
         # increment the number of guesses by one
         wordle_game.user_attempt.set_num_of_guesses += 1
 
-        #print(wordle_game.user_attempt.wrong_letters)
-
         # extract word from WordleWord object and convert to list
         char_list = list(wordle_game.user_attempt.wordle_word.word)
-        #char_list = ["C", "L", "O", "S", "E"]
+        # char_list = ["U", "D", "D", "E", "R"] #DRUID (druid= Y Y Y R Y) pass
+        # char_list = ["C", "L", "O", "S", "E"] #LEAVE (leave= Y R R R G) pass
+        # char_list = ["C", "H", "E", "E", "R"] #CLOSE (close= G R R R Y) pass
+        # char_list = ["T", "H", "E", "M", "E"] #START (start= R Y R R R) pass
+        # char_list = ["D", "E", "M", "U", "R"] #TRACE and LEMUR (trace = R Y R R Y) (lemur= R G G G G) pass
+        # char_list = ["H", "Y", "E", "N", "A"] #NIECE and GREEN (niece= Y R G R R) (green= R R G R Y) pass
         print(char_list)
 
         # convert user_guess to list
@@ -441,17 +449,18 @@ def submit_guess():
 
         # create lists for correct_letters and misplaced_letters
         correct_letters = []
-        misplaced_letters = []
+        misplaced_letters = ["_", "_", "_", "_", "_"]
 
         # create empty current_wrong_letters_list
-        current_wrong_letters = []
+        current_wrong_letters = ["_", "_", "_", "_", "_"]
 
+        # CORRECT GUESS
         if user_guess_as_list == char_list:
             char_count = 0
 
             # update lbl_submitted_guess text
             label_text = f"Guess #{wordle_game.user_attempt.num_of_guesses} : {user_guess.upper()} is correct!"
-            lbl_submitted_guess.config(text= label_text, fg="green")
+            lbl_submitted_guess.config(text=label_text, fg="green")
 
             # update guess letter labels
             for char in char_list:
@@ -462,32 +471,29 @@ def submit_guess():
                 list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
                 char_count += 1
 
-
             # update guessed_correct of attempt to True
             wordle_game.user_attempt.set_guessed_correct = True
 
             # update lbl_num_guessed_correct
             wordle_game.set_num_guessed_correct += 1
-            lbl_num_guessed_correct.config(text= wordle_game.num_guessed_correct)
+            lbl_num_guessed_correct.config(text=wordle_game.num_guessed_correct)
 
             # disable submit_btn and entry_guess
             submit_btn.config(state=DISABLED)
             entry_guess.config(state=DISABLED)
 
-        #elif block for incorrect guess numbers less than MAX_GUESSES
+        # elif block for incorrect guess numbers less than MAX_GUESSES
         elif wordle_game.user_attempt.num_of_guesses <= MAX_GUESSES:
 
             # create remaining_char_list as copy of char_list
             remaining_char_list = char_list.copy()
 
-            # for loop to find letters in correct position
+            # CORRECT LETTER for loop
             char_count = 0
             for char in char_list:
-                #check for correct letter
+                # check for correct letter
                 if char_list[char_count] == user_guess_as_list[char_count]:
                     correct_letters.append(char)
-                    # remove char from remaining_char_list
-                    remaining_char_list[char_count] = ""
 
                     # update guess letter label
                     row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
@@ -495,17 +501,22 @@ def submit_guess():
                     row_letter_lbl.config(text=user_guess_as_list[char_count], fg='green', font='segoe 9 bold')
                     row_lbl_list[char_count] = row_letter_lbl
                     list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
+
+                    # replace current index(char_count) in remaining_char_list and user_guess_as_list with "_"
+                    remaining_char_list[char_count] = "_"
+                    user_guess_as_list[char_count] = "_"
+
                 else:
                     correct_letters.append("_")
 
                 char_count += 1
 
-            # for loop to find misplaced letters
+            # MISPLACED LETTERS for loop
             char_count = 0
             for char in user_guess_as_list:
-                if user_guess_as_list[char_count] in remaining_char_list and user_guess_as_list[char_count] != char_list[char_count]:
-                    remaining_char_list[char_count] = ""
-                    misplaced_letters.append(char)
+                if char in remaining_char_list and char not in correct_letters and char != "_":
+
+                    misplaced_letters[char_count] = char
 
                     # update guess letter label
                     row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
@@ -513,18 +524,33 @@ def submit_guess():
                     row_letter_lbl.config(text=user_guess_as_list[char_count], fg='orange', font='segoe 9 bold')
                     row_lbl_list[char_count] = row_letter_lbl
                     list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-                else:
+
+                    # replace current index(char_count) in user_guess_as_list with "_"
+                    user_guess_as_list[char_count] = "_"
+
+                    # replace matching char of remaining_char_list with "_"
+                    char_index = remaining_char_list.index(char)
+                    remaining_char_list[char_index] = "_"
+
+                elif char not in correct_letters:
+                    # remaining_char_list[remaining_char_list.index(char)] = "_"
                     wordle_game.user_attempt.wrong_letters.append(char)
-                    current_wrong_letters.append(char)
+                    current_wrong_letters[char_count] = char
                 char_count += 1
 
-            # char is not in word
-            char_count = 0
-            for char in remaining_char_list:
-                if char != "":
-                    # correct_letters.append("_")
-                    # wordle_game.user_attempt.wrong_letters.append(char)
+            # print lists for debugging
+            print("Incorrect")
+            print(f"Correct Letters: {correct_letters}")
+            print(f"Misplaced Letters: {misplaced_letters}")
+            print(f"Wrong Letters: {wordle_game.user_attempt.wrong_letters}")
+            print(f"Current Wrong Letters: {current_wrong_letters}")
+            print(f"Remaining Letters: {remaining_char_list}")
+            print(f"Remaining User Guess: {user_guess_as_list}")
 
+            # WRONG LETTERS for loop
+            char_count = 0
+            for char in user_guess_as_list:
+                if char != "_":
                     # update guess letter labels
                     row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
                     row_letter_lbl = row_lbl_list[char_count]
@@ -534,23 +560,21 @@ def submit_guess():
 
                 char_count += 1
 
-            # convert letter lists to sets to remove duplicates
-            print("Incorrect")
-            print(f"Correct Letters: {correct_letters}")
-            print(f"Misplaced Letters: {set(misplaced_letters)}")
-            print(f"Wrong Letters: {set(wordle_game.user_attempt.wrong_letters)}")
-
             # update letter_lbls that match wrong letters
-            for letter in current_wrong_letters:
-                if (letter not in correct_letters) and (letter not in misplaced_letters):
-                    temp_letter_lbl = letter_lbl_dict[letter]
-                    temp_letter_lbl.config(relief=SUNKEN, fg="red", font= 'segoe 9 bold')
-                    letter_lbl_dict[letter] = temp_letter_lbl
-
+            char_count = 0
+            for char in current_wrong_letters:
+                if char != "_":
+                    # char_index = .index(char)
+                    wrong_letter = user_guess_as_list[char_count]
+                    if (char != "_") and (char not in correct_letters) and (char not in misplaced_letters):
+                        temp_letter_lbl = letter_lbl_dict[wrong_letter]
+                        temp_letter_lbl.config(relief=SUNKEN, fg="red", font='segoe 9 bold')
+                        letter_lbl_dict[char] = temp_letter_lbl
+                char_count += 1
             # update lbl_submitted_guess text
             if wordle_game.user_attempt.num_of_guesses < MAX_GUESSES:
                 label_text = f"Guess #{wordle_game.user_attempt.num_of_guesses} : {user_guess.upper()} is incorrect"
-                lbl_submitted_guess.config(text= label_text, fg="black")
+                lbl_submitted_guess.config(text=label_text, fg="black")
 
             # num_of_guesses equal MAX_GUESSES thus no more input (disable entry_guess and submit_btn)
             else:
@@ -558,152 +582,6 @@ def submit_guess():
                 submit_btn.config(state=DISABLED)
                 entry_guess.config(state=DISABLED)
 
-
-        # # else block for incorrect guess equaling MAX_GUESSES
-        # else:
-        #     # create remaining_char_list as copy of char_list
-        #     remaining_char_list = char_list.copy()
-        #
-        #     # for loop to find letters in correct position
-        #     char_count = 0
-        #     for char in char_list:
-        #         # check for correct letter
-        #         if char_list[char_count] == user_guess_as_list[char_count]:
-        #             correct_letters.append(char)
-        #             # remove char from remaining_char_list
-        #             remaining_char_list[char_count] = ""
-        #
-        #             # update guess letter label
-        #             row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-        #             row_letter_lbl = row_lbl_list[char_count]
-        #             row_letter_lbl.config(text=user_guess_as_list[char_count], fg='green', font='segoe 9 bold')
-        #             row_lbl_list[char_count] = row_letter_lbl
-        #             list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-        #         else:
-        #             correct_letters.append("_")
-        #
-        #         char_count += 1
-        #
-        #     # for loop to find misplaced letters
-        #     char_count = 0
-        #     for char in char_list:
-        #         if user_guess_as_list[char_count] in remaining_char_list and user_guess_as_list[char_count] != char_list[char_count]:
-        #             remaining_char_list[char_count] = ""
-        #             correct_letters.append("_")
-        #             misplaced_letters.append(char)
-        #
-        #             # update guess letter label
-        #             row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-        #             row_letter_lbl = row_lbl_list[char_count]
-        #             row_letter_lbl.config(text=user_guess_as_list[char_count], fg='orange', font='segoe 9 bold')
-        #             row_lbl_list[char_count] = row_letter_lbl
-        #             list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-        #
-        #         char_count += 1
-        #
-        #     # char is not in word
-        #     char_count = 0
-        #     for char in remaining_char_list:
-        #         if char != "":
-        #             # correct_letters.append("_")
-        #             wordle_game.user_attempt.wrong_letters.append(char)
-        #
-        #             # update guess letter labels
-        #             row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-        #             row_letter_lbl = row_lbl_list[char_count]
-        #             row_letter_lbl.config(text=user_guess_as_list[char_count], fg="firebrick", font='segoe 9 bold')
-        #             row_lbl_list[char_count] = row_letter_lbl
-        #             list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-        #
-        #         char_count += 1
-        #
-        #     # convert letter lists to sets to remove duplicates
-        #     print("Incorrect")
-        #     print(f"Correct Letters: {correct_letters}")
-        #     print(f"Misplaced Letters: {set(misplaced_letters)}")
-        #     print(f"Wrong Letters: {set(wordle_game.user_attempt.wrong_letters)}")
-        #
-        #     # update letter_lbls that match wrong letters
-        #     for letter in wordle_game.user_attempt.wrong_letters:
-        #         temp_letter_lbl = letter_lbl_dict[letter]
-        #         temp_letter_lbl.config(relief=SUNKEN, fg="red", font= 'segoe 9 bold')
-        #         letter_lbl_dict[letter] = temp_letter_lbl
-        #
-        #     # update lbl_submitted_guess text
-        #     lbl_submitted_guess.config(text=f"Incorrect, Correct word was{char_list}", fg="red")
-
-            """
-            char_count = 0
-            for char in user_guess_as_list:
-                # check for correct letter
-                if char_list[char_count] == user_guess_as_list[char_count]:
-
-                    correct_letters.append(char)
-                    # remove char from misplaced letters list if present
-                    if char in misplaced_letters:
-                        misplaced_letters.remove(char)
-
-                    # update guess letter labels
-                    row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-                    row_letter_lbl = row_lbl_list[char_count]
-                    row_letter_lbl.config(text=user_guess_as_list[char_count], fg='green', font='segoe 9 bold')
-                    row_lbl_list[char_count] = row_letter_lbl
-                    list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-
-                    # replace current char in char_list with ""
-                    char_list[char_count] = ""
-
-                    char_count += 1
-
-                # check for misplaced letter
-                elif char in char_list:
-                    correct_letters.append("_")
-                    misplaced_letters.append(char)
-
-                    # update guess letter labels
-                    row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-                    row_letter_lbl = row_lbl_list[char_count]
-                    row_letter_lbl.config(text=user_guess_as_list[char_count], fg='orange', font='segoe 9 bold')
-                    row_lbl_list[char_count] = row_letter_lbl
-                    list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-
-                    # replace current char in char_list with ""
-                    char_list[char_count] = ""
-
-                    char_count += 1
-
-                # char is not in word
-                elif char not in char_list:
-                    correct_letters.append("_")
-                    wordle_game.user_attempt.wrong_letters.append(char)
-
-                    # update guess letter labels
-                    row_lbl_list = list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1]
-                    row_letter_lbl = row_lbl_list[char_count]
-                    row_letter_lbl.config(text=user_guess_as_list[char_count], fg="firebrick", font='segoe 9 bold')
-                    row_lbl_list[char_count] = row_letter_lbl
-                    list_letter_row_lbls[wordle_game.user_attempt.num_of_guesses - 1] = row_lbl_list
-
-                    # replace current char in char_list with ""
-                    char_list[char_count] = ""
-
-                    char_count += 1
-
-            # convert letter lists to sets to remove duplicates
-            print("Incorrect")
-            print(f"Correct Letters: {correct_letters}")
-            print(f"Misplaced Letters: {set(misplaced_letters)}")
-            print(f"Wrong Letters: {set(wordle_game.user_attempt.wrong_letters)}")
-
-            # update letter_lbls that match wrong letters
-            for letter in wordle_game.user_attempt.wrong_letters:
-                temp_letter_lbl = letter_lbl_dict[letter]
-                temp_letter_lbl.config(relief=SUNKEN, fg="red", font='segoe 9 bold')
-                letter_lbl_dict[letter] = temp_letter_lbl
-
-            # update lbl_submitted_guess text
-            lbl_submitted_guess.config(text=f"Incorrect, Correct word was{char_list}", fg="red")
-            """
 
 def gen_next_word_attempt():
     """
@@ -730,13 +608,14 @@ def gen_next_word_attempt():
     submit_btn.config(state=NORMAL)
     entry_guess.config(state=NORMAL)
 
+    # clear lbl_submitted_guess
+    lbl_submitted_guess.config(text="")
+
+
 '''
 FUNCTIONS ABOVE HERE
 '''
 main_window = tk.Tk()
-
-your_font = font.nametofont("TkDefaultFont")  # Get default font value into Font object
-print(your_font.actual())
 
 '''
 MODULE CODE BELOW HERE
@@ -773,7 +652,7 @@ lbl_empty_row1.grid(row=1, column=0)
 create_row_letter_labels()
 
 # test print to ensure 26 different letter labels added to letter_lbl_dict
-#print(len(letter_lbl_dict))
+# print(len(letter_lbl_dict))
 
 # create guess labels
 create_guess_labels()
@@ -798,7 +677,7 @@ lbl_empty_row11.grid(row=11, column=0)
 lbl_empty_row13 = tk.Label(main_window, text='')
 lbl_empty_row13.grid(row=13, column=0)
 
-#print(len(list_letter_row_lbls))
+# print(len(list_letter_row_lbls))
 
 # add empty label for row 15
 lbl_empty_row15 = tk.Label(main_window, text='')
@@ -834,11 +713,12 @@ lbl_empty_row18 = tk.Label(main_window, text='')
 lbl_empty_row18.grid(row=18, column=0)
 
 # add Next Word button to row 19
-next_word_btn= tk.Button(main_window, text="Next Word", state=DISABLED, command=lambda: gen_next_word_attempt())
+next_word_btn = tk.Button(main_window, text="Next Word", state=DISABLED, command=lambda: gen_next_word_attempt())
 next_word_btn.grid(row=19, column=1, rowspan=1, columnspan=2)
 
 # add Submit Button to row 19
-submit_btn = tk.Button(main_window, text="Submit", width=25, justify="center", state=DISABLED, command=lambda: submit_guess())
+submit_btn = tk.Button(main_window, text="Submit", width=25, justify="center", state=DISABLED,
+                       command=lambda: submit_guess())
 submit_btn.grid(row=19, column=5, rowspan=1, columnspan=2)
 
 # add empty label for row 20
@@ -846,8 +726,8 @@ lbl_empty_row20 = tk.Label(main_window, text='')
 lbl_empty_row20.grid(row=20, column=0)
 
 # add Start Game Button to row 21
-start_game_btn = tk.Button(main_window, text="Start Game", command= lambda : start_game())
-start_game_btn.grid(row= 21, column=2, rowspan=1, columnspan=1)
+start_game_btn = tk.Button(main_window, text="Start Game", command=lambda: start_game())
+start_game_btn.grid(row=21, column=2, rowspan=1, columnspan=1)
 
 # add submitted_guess label to row 21
 lbl_submitted_guess = tk.Label(main_window, text="")
