@@ -436,6 +436,7 @@ def submit_guess():
 
         # extract word from WordleWord object and convert to list
         char_list = list(wordle_game.user_attempt.wordle_word.word)
+        #print(char_list)
 
         ###### COMMENTED OUT char_list (words) USED FOR TESTING BELOW HERE ######
         # char_list = ["U", "D", "D", "E", "R"] #DRUID (druid= Y Y Y R Y) pass
